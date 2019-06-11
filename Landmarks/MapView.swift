@@ -11,6 +11,8 @@ import MapKit
 
 struct MapView : UIViewRepresentable {
 
+    //Properties
+    var coordinate : CLLocationCoordinate2D
     
 
     //Custom Functions
@@ -22,11 +24,11 @@ struct MapView : UIViewRepresentable {
     //Updating the map with coordinates
     func updateUIView(_ view: MKMapView, context: Context) {
 //        Map needs:
-//        - Coordinates
+//        - Coordinates, that can be passed from a class variable
 //        - Span: How much does it close into the region to show?
 //        - Region: An ensemble of both coordinate and span
         
-        let coordinate = CLLocationCoordinate2D(latitude: 34.011286, longitude: -116.166868)
+        
         let span = MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0)
         let region = MKCoordinateRegion(center: coordinate, span: span)
         view.setRegion(region, animated: true)
@@ -41,7 +43,7 @@ struct MapView : UIViewRepresentable {
 #if DEBUG
 struct MapView_Previews : PreviewProvider {
     static var previews: some View {
-        MapView()
+        MapView(coordinate: landmarkData[0].locationCoordinate)
     }
 }
 #endif

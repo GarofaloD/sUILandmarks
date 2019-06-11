@@ -11,31 +11,32 @@ import SwiftUI
 struct LandmarkDetail : View {
     
     //Properties
+    var landmark : Landmark
     
     //View Build
     var body: some View {
         //For the whole page
         VStack {
             //We can import subviews directly into parent views
-            MapView()
+            MapView(coordinate: landmark.locationCoordinate)
                 .edgesIgnoringSafeArea(.top)
-                .frame(height: 300)
-            CircleView()
+               .frame(height: 300)
+            CircleView(image: landmark.image(forSize: 250))
                 .offset(y: -130)
                 .padding(.bottom, -130)
             
             
             VStack (alignment: .leading){
-                Text("Turtle Rock")
+                Text(landmark.name)
                     .font(.title)
                     .color(.black)
                 
                     //For the bottom line
                     HStack {
-                        Text("Joshua Tree National Park")
+                        Text(landmark.park)
                             .font(.subheadline)
                             Spacer()
-                            Text("California")
+                            Text(landmark.state)
                                 .font(.subheadline)
                         }
                 
@@ -43,6 +44,7 @@ struct LandmarkDetail : View {
                     .padding()
                 Spacer() //This one adds more space at the bottom and pushes everything to the top
             }
+            .navigationBarTitle(Text(landmark.name), displayMode: .inline)
     }
 }
 
@@ -53,7 +55,7 @@ struct LandmarkDetail : View {
 #if DEBUG
 struct LandmarkDetail_Previews : PreviewProvider {
     static var previews: some View {
-        LandmarkDetail()
+        LandmarkDetail(landmark: landmarkData[0])
     }
 }
 #endif
