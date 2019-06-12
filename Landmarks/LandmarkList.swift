@@ -11,7 +11,10 @@ import SwiftUI
 struct LandmarkList : View {
     
     //Properties
+    //@State var showFavoritesOnly = true
     
+    //This object will be the observer for the elements that are associated on the userData class (showFavoritesOnly and landmarks)
+    @EnvironmentObject var userData : UserData
     
     
     //Building the view
@@ -24,10 +27,21 @@ struct LandmarkList : View {
         //It creates the full nav bar
         NavigationView {
             //Creates the list
-            List(landmarkData) { landmark in
-                //Each row is a button that, when pressed, takes you to the detail of that partcular location
-                NavigationButton(destination: LandmarkDetail(landmark: landmark)) {
-                    LandmarkRow(landmark: landmark)
+            List {
+                Toggle(isOn: $userData.showFavoritesOnly) {
+                    Text("Favorites only")
+                }
+                
+
+                //Create a new row for each element
+                ForEach(userData.landmarks) { landmark in
+                //Show only favorites or if the filter for favorites is on.
+                    if !self.userData.showFavoritesOnly || landmark.isFavorite {
+                        //Each row is a button that, when pressed, takes you to the detail of that partcular location
+                        NavigationButton(destination: LandmarkDetail(landmark: landmark)) {
+                            LandmarkRow(landmark: landmark)
+                        }
+                    }
                 }
             }
             .navigationBarTitle(Text("Landmarks"))
@@ -39,10 +53,11 @@ struct LandmarkList : View {
 #if DEBUG
 struct LandmarkList_Previews : PreviewProvider {
     static var previews: some View {
-            ForEach(["iPhone Xs Max", "iPhone 8"].identified(by: \.self)) { deviceName in
+            ForEach(["iPhone Xs Max"].identified(by: \.self)) { deviceName in
                 LandmarkList()
-                    .previewDevice(PreviewDevice(rawValue: deviceName))
+                 //   .previewDevice(PreviewDevice(rawValue: deviceName))
                     //.previewDisplayName(deviceName)
+                .environmentObject(UserData())
             }
     }
 }

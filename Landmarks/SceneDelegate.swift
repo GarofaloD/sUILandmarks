@@ -21,7 +21,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Use a UIHostingController as window root view controller
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = UIHostingController(rootView: LandmarkList())
+        window.rootViewController = UIHostingController(rootView: LandmarkList()
+            .environmentObject(UserData()) //If you build and run Landmarks in the simulator or on a device, rather than using the preview, this update ensures that LandmarkList has a UserData object in the environment.
+        )
         self.window = window
         window.makeKeyAndVisible()
     }

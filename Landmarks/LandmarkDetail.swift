@@ -11,7 +11,15 @@ import SwiftUI
 struct LandmarkDetail : View {
     
     //Properties
+    @EnvironmentObject var userData : UserData
     var landmark : Landmark
+    
+    //This will be the latest version of the favorites feature
+    var landmarkIndex : Int {
+        userData.landmarks.firstIndex(where: { $0.id == landmark.id})!
+    }
+    
+    
     
     //View Build
     var body: some View {
@@ -27,9 +35,32 @@ struct LandmarkDetail : View {
             
             
             VStack (alignment: .leading){
-                Text(landmark.name)
-                    .font(.title)
-                    .color(.black)
+                HStack {
+                    Text(landmark.name)
+                        .font(.title)
+                        .color(.black)
+                    
+                    Button(action: {
+                        // in the clocusre, the code uses landmarkIndex with the userData object to update the landmark in place.
+                        self.userData.landmarks[self.landmarkIndex].isFavorite.toggle()
+                    }) {
+                        if self.userData.landmarks[self.landmarkIndex].isFavorite {
+                            Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                        } else {
+                            Image(systemName: "star")
+                            .foregroundColor(.gray)
+                        }
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                }
                 
                     //For the bottom line
                     HStack {
